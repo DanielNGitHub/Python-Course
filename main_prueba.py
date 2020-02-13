@@ -1,5 +1,5 @@
 import sys
-clients='Daniel,Oscar,Alvaro,Miguel,'
+clients=['Daniel','Oscar','Alvaro','Miguel']
 
 
 def _welcome_options():
@@ -21,41 +21,53 @@ def get_client_name():
         sys.exit() 
     return client_name 
 
-
-def add_comma():
-    global clients 
-    clients+=','
-
 def clients_list():
+    '''
+    Usamos la funcion enumerate e inmediatamente queda a siganda a index,
+    demanera que podemos mostrar el index con su cliente usanto format()
+    '''
     global clients
-    print(clients)
+    for index,client in enumerate(clients): 
+        print('{}:{}'.format(index,client))
 
 def create_client(client):
-    global clients 
+    global clients
+    '''
+    Usamos el metodo append para añadir al cliente en nuestra lista
+    ''' 
     if client not in clients:
-     clients+=client
-     add_comma()
+     clients.append(client)
     else:
       print('The client was created before')
 
 def uptodate_clients(old_client,new_client):
+    '''
+    Buscamos el index que tiene un parametro dentro de una lista con elmetodo index()
+    luego lo usamos para reemplazar el old_client por el new_client en la misma posicion
+    '''
     global clients
     if old_client in clients:
-        clients=clients.replace(old_client+',',new_client+',')
-        print('The client {} was replace for the client {}'.format(old_client,new_client)) 
+       index=clients.index(old_client)
+       clients[index]=new_client
+
     else:
         print('The client doesn\'t exist in our list please select create a client')
 
 def delete_client(client):
+    '''
+    Al igual que en uptodate_client con el index usamos la funcion del, aunque otra opcion sería remove() pues no requiere
+    sino unicamente el valor lo caul lo hace mas simple.
+    '''
     global clients
     if client in clients:
-        clients=clients.replace(client +',','')
+     index=clients.index(client)
+     del clients[index]
+        
     else:
         print('The client doesn\'t exist in our list please select create a client')
     
 def search_client(client):
     global clients
-    clients=clients.split(',')
     for customer in clients:
         if customer==client:
             return True
