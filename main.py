@@ -1,102 +1,110 @@
-clients='Daniel,Oscar,Ricardo,Oliver,'
+import sys
+clients=['Daniel','Oscar','Alvaro','Miguel']
 
-def new_client (client):
+
+def _welcome_options():
+    print('welcome to my first CRUD please choose the below options')
+    print('[C]reate a new client')
+    print('[U]update a client from our client list')
+    print('[D]elete a client')
+    print('[L]ist of clients')
+    print('[S]earche a client')
+
+def get_client_name():
+    client_name=None
+    while not client_name:
+      client_name= input('What is the client name')
+      if client_name == 'exit':
+          client_name=None
+          break
+    if not client_name:
+        sys.exit() 
+    return client_name 
+
+def clients_list():
     '''
-    Tuve inconvenientes el refundir client con clients
+    Usamos la funcion enumerate e inmediatamente queda a siganda a index,
+    demanera que podemos mostrar el index con su cliente usanto format()
     '''
     global clients
+    for index,client in enumerate(clients): 
+        print('{}:{}'.format(index,client))
+
+def create_client(client):
+    global clients
+    '''
+    Usamos el metodo append para añadir al cliente en nuestra lista
+    ''' 
     if client not in clients:
-       clients+=client
-       _add_comma()
+     clients.append(client)
     else:
-        print('The client is already in the list')
+      print('The client was created before')
+
+def uptodate_clients(old_client,new_client):
+    '''
+    Buscamos el index que tiene un parametro dentro de una lista con elmetodo index()
+    luego lo usamos para reemplazar el old_client por el new_client en la misma posicion
+    '''
+    global clients
+    if old_client in clients:
+       index=clients.index(old_client)
+       clients[index]=new_client
+
+    else:
+        print('The client doesn\'t exist in our list please select create a client')
 
 def delete_client(client):
     '''
-    Al igual que la anterior no habia declarado clients como global y esta 
-    evaluando client en clients, mas de 15 min tratando de resolver el problema
-    '''
-    global clients    
-    if client in clients:
-       clients = clients.replace(client + ',','')
-    
-    else: 
-     print('Client with name '+client+' was\'t fount please create a new one')
-
-def uptodate_client(old,new):
-    '''
-    El comando es replace y se debe colocar los dos argumentos separados por ',' y colocar
-    la coma seguido del nombre debido a que esta se pierde cuando re remplaza o elimina 
-    un nombre
+    Al igual que en uptodate_client con el index usamos la funcion del, aunque otra opcion sería remove() pues no requiere
+    sino unicamente el valor lo caul lo hace mas simple.
     '''
     global clients
-    if old in clients:
-      clients = clients.replace(old + ',', new + ',')
+    if client in clients:
+     index=clients.index(client)
+     del clients[index]
+        
+    else:
+        print('The client doesn\'t exist in our list please select create a client')
     
-    else: 
-     print('Client with name '+old+' was\'t fount please create a new one')
-
-def search_client(client_name):
-    clients_list=clients.split(',')
-    for client in clients_list:
-        if client == client_name:
+def search_client(client):
+    global clients
+    for customer in clients:
+        if customer==client:
             return True
         else:
             continue
 
-def _add_comma():
-    global clients
-    clients+=','
-
-def clients_list():
-    global clients
-    print(clients)
-
-def _print_welcome():
-    print('Welcome to our New Brand Interface')
-    print('*'*50)
-    print('What would you like to do today')
-    print('[L]ist of Clients')
-    print('[C]reate a Client')
-    print('[D]elete a Client')
-    print('[U]update client')
-    print('[S]earch a Client')
-
-def get_client_name():
-    return input('What is the client name')
-
 if __name__ == "__main__":
+    _welcome_options()
 
-    _print_welcome()
-    command= input()
+    command=input()
     command=command.upper()
-
-    if command =='C': 
-        client_name= get_client_name()
-        new_client(client_name)
+    if command == 'C':
+        client_name=get_client_name()
+        create_client(client_name)
         clients_list()
-    elif command =='D':
-        client_name=input('What is the name of the client for Delete')
+    
+    if command == 'U':
+        client_name=get_client_name()
+        uptodate_client =input('What is the new client name')
+        uptodate_clients(client_name,uptodate_client)
+        clients_list()
+
+    if command == 'D':
+        client_name=get_client_name()
         delete_client(client_name)
         clients_list()
-    elif command == 'S':
+
+    if command == 'L':
+        clients_list()
+    
+    if command == 'S':
         client_name=get_client_name()
         found=search_client(client_name)
         if found:
-            print('The client {} is in our list'.format(client_name))
+            print('The client is in our list')
         else:
-            print('The client {} wasn\'t found' .format(client_name))
-
-    elif command=='U':
-        actual_client=get_client_name()
-        update_client=input('What is the new client name')
-        uptodate_client(actual_client,update_client)
-        clients_list()
-    elif command == 'L':
-        clients_list()
-    else: 
-        print('Ivalid command')
-
+            print('The client wasn\'t found in our list')    
 
   
 
