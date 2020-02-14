@@ -1,5 +1,9 @@
 import sys
-clients=['Daniel','Oscar','Alvaro','Miguel']
+clients=[{'name':'Pablo','company':'Google','email':'plablo@google.com',
+'position':'Software Enginner'}
+,{
+'name':'Ricardo','company':'Facebook','email':'ricardo@facebook.com','position':'Date Engineer'
+}]
 
 
 def _welcome_options():
@@ -9,6 +13,12 @@ def _welcome_options():
     print('[D]elete a client')
     print('[L]ist of clients')
     print('[S]earche a client')
+
+def _get_client_field(field_name):
+    field=None
+    while not field:
+        field=input('What is the client {}?'.format(field_name))
+    return field
 
 def get_client_name():
     client_name=None
@@ -28,15 +38,21 @@ def clients_list():
     '''
     global clients
     for index,client in enumerate(clients): 
-        print('{}:{}'.format(index,client))
+        print('{uid} | {name} | {company} | {email} | {email} |{position}'.format(
+            uid=index,
+            name=client['name'],
+            company=client['company'],
+            email=client['email'],
+            position=client['position']))
 
 def create_client(client):
     global clients
     '''
     Usamos el metodo append para añadir al cliente en nuestra lista
     ''' 
-    if client not in clients:
-     clients.append(client)
+    if client not in clientcs:
+       
+     clients.update(client)
     else:
       print('The client was created before')
 
@@ -80,8 +96,12 @@ if __name__ == "__main__":
     command=input()
     command=command.upper()
     if command == 'C':
-        client_name=get_client_name()
-        create_client(client_name)
+        client ={
+            'name':_get_client_field('name'),
+            'company':_get_client_field('company'),
+            'email':_get_client_field('email'),
+            'position':_get_client_field('position'),
+        }
         clients_list()
     
     if command == 'U':
